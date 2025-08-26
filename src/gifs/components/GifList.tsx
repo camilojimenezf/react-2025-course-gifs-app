@@ -1,4 +1,4 @@
-import type { Gif } from "../../mocks/gifs.mock";
+import type { Gif } from "../interfaces/gif.interface";
 
 interface GifListProps {
   gifs: Gif[];
