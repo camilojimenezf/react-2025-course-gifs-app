@@ -1,35 +1,11 @@
-import { useState } from "react";
-
-import { GifList } from "./gifs/components/GifList";
-import { PreviousSearches } from "./gifs/components/PreviousSearches";
 import { CustomHeader } from "./shared/components/CustomHeader";
 import { SearchBar } from "./shared/components/SearchBar";
-
-import { getsGifsByQuery } from "./gifs/actions/get-gifs-by-query.action";
-
-import type { Gif } from "./gifs/interfaces/gif.interface";
+import { GifList } from "./gifs/components/GifList";
+import { PreviousSearches } from "./gifs/components/PreviousSearches";
+import { useGifs } from "./gifs/hooks/useGifs";
 
 export const GifsApp = () => {
-  const [gifs, setGifs] = useState<Gif[]>([]);
-  const [previousTerms, setPreviousTerms] = useState<string[]>([]);
-
-  const handlePrevSearch = async (term: string) => {
-    const parsedTerm = term.trim().toLowerCase();
-    const gifs = await getsGifsByQuery(parsedTerm);
-    setGifs(gifs);
-  };
-
-  const handleSearch = async (term: string) => {
-    const parsedTerm = term.trim().toLowerCase();
-
-    if (parsedTerm.length === 0) return;
-    if (previousTerms.includes(parsedTerm)) return;
-
-    setPreviousTerms([parsedTerm, ...previousTerms].splice(0, 7));
-
-    const gifs = await getsGifsByQuery(parsedTerm);
-    setGifs(gifs);
-  };
+  const { gifs, previousTerms, handlePrevSearch, handleSearch } = useGifs();
 
   return (
     <>
